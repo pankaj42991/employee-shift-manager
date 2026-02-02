@@ -24,10 +24,10 @@ class BackupManager(private val context: Context) {
      * Export full Room DB to JSON
      */
     suspend fun exportBackup(): File = withContext(Dispatchers.IO) {
-        val employees = App.db.employeeDao().getAll()
-        val shifts = App.db.shiftDao().getAll()
-        val holidays = App.db.holidayDao().getAll()
-        val compOffs = App.db.compOffDao().getAll()
+        val employees = NewAppApplication.db.employeeDao().getAll()
+        val shifts = NewAppApplication.db.shiftDao().getAll()
+        val holidays = NewAppApplication.db.holidayDao().getAll()
+        val compOffs = NewAppApplication.db.compOffDao().getAll()
 
         val backupData = BackupData(employees, shifts, holidays, compOffs)
         val json = gson.toJson(backupData)
