@@ -6,8 +6,7 @@
         android:allowBackup="true"
         android:label="NewApp"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@style/Theme.Material3.DayNight.NoActionBar">
-
+        android:theme="@style/Theme.NewApp"
         <activity
             android:name=".ui.dashboard.DashboardActivity"
             android:exported="true">
