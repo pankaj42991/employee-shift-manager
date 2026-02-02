@@ -6,6 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.pktech.newapp.data.local.dao.*
 import com.pktech.newapp.data.local.entity.*
+import androidx.room.TypeConverters
+import com.pktech.newapp.data.local.converter.DateConverter
 
 @Database(
     entities = [
@@ -17,6 +19,8 @@ import com.pktech.newapp.data.local.entity.*
     version = 1,
     exportSchema = false
 )
+@TypeConverters(DateConverter::class)
+abstract class AppDatabase : RoomDatabase()
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun employeeDao(): EmployeeDao
