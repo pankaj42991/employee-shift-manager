@@ -14,7 +14,8 @@ import java.time.LocalDate
             childColumns = ["employeeId"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+     ],
+    indices = [Index(value = ["employeeId"])]
 )
 data class ShiftEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
