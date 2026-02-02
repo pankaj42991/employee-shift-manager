@@ -3,15 +3,13 @@ package com.pktech.newapp.data.local.converter
 import androidx.room.TypeConverter
 import java.time.LocalDate
 
-class DateConverter {
+class Converters {
 
     @TypeConverter
-    fun fromLocalDate(date: LocalDate?): String? {
-        return date?.toString()   // yyyy-MM-dd
-    }
+    fun fromLocalDate(date: LocalDate?): String? =
+        date?.toString()
 
     @TypeConverter
-    fun toLocalDate(dateString: String?): LocalDate? {
-        return dateString?.let { LocalDate.parse(it) }
-    }
+    fun toLocalDate(value: String?): LocalDate? =
+        value?.let { LocalDate.parse(it) }
 }
