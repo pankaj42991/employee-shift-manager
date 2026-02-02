@@ -85,7 +85,7 @@ dependencies {
     // PDF
     // -----------------------------
     
-    implementation "com.itextpdf:itextg:5.5.10"
+
 
       // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.7.3"
