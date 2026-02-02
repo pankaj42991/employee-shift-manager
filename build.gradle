@@ -1,10 +1,27 @@
+// ===============================
+// Project-level build.gradle
+// ===============================
+
 buildscript {
+
+    // ✅ repositories YAHAN REQUIRED hain (sirf buildscript ke liye)
+    repositories {
+        google()
+        mavenCentral()
+    }
+
     dependencies {
+        // Android Gradle Plugin
         classpath "com.android.tools.build:gradle:8.3.0"
+
+        // Google Services / Firebase
         classpath "com.google.gms:google-services:4.4.0"
     }
 }
 
-task clean(type: Delete) {
+// ❌ allprojects / repositories MAT likho
+// ❌ repositories outside buildscript MAT likho
+
+tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
