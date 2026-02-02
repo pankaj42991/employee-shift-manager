@@ -6,7 +6,7 @@
   <string name="email_hint">Email</string>
   <string name="password_hint">Password</string>
   <string name="btn_logout">Logout</string>
-  <string name="home_today_shifts">Today's Shifts &amp; Comp-Off Summary</string>
+  <string name="home_today_shifts">Today&apos;s Shifts &amp; Comp-Off Summary</string>
   <string name="menu_home">Home</string>
   <string name="menu_calendar">Calendar</string>
   <string name="menu_report">Report</string>
