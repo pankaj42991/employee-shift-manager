@@ -11,10 +11,7 @@ interface HolidayDao {
 
     @Query("SELECT * FROM holidays")
     suspend fun getAll(): List<HolidayEntity>
-    
-    @Query("SELECT * FROM shifts")
-suspend fun getAll(): List<ShiftEntity>
 
-@Query("DELETE FROM shifts")
-suspend fun clearAll()
+    @Query("DELETE FROM holidays")
+    suspend fun clearAll()
 }
