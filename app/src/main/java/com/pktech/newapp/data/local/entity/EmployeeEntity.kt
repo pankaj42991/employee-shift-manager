@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class EmployeeEntity(
     @PrimaryKey val id: Int,
     val name: String,
+    val email: String,
     val isAdmin: Boolean
 )
