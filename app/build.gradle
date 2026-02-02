@@ -44,61 +44,62 @@ android {
 dependencies {
 
     // -----------------------------
-    // AndroidX & Material Design
+    // AndroidX & Material
     // -----------------------------
     implementation "androidx.core:core-ktx:1.12.0"
-    implementation "androidx.appcompat:appcompat:1.7.0"
+    implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "com.google.android.material:material:1.11.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.2.0"
-    implementation "androidx.activity:activity-ktx:1.9.0"
-    implementation "androidx.fragment:fragment-ktx:1.7.2"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
 
     // -----------------------------
-    // Lifecycle (ViewModel + LiveData)
+    // Lifecycle (STABLE)
     // -----------------------------
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.7.2"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.2"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.2"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
 
     // -----------------------------
-    // Kotlin Coroutines
+    // Activity / Fragment
     // -----------------------------
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
+    implementation "androidx.activity:activity-ktx:1.8.2"
+    implementation "androidx.fragment:fragment-ktx:1.6.2"
+
+    // -----------------------------
+    // Coroutines
+    // -----------------------------
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 
     // -----------------------------
-    // Room Database
+    // Room
     // -----------------------------
     implementation "androidx.room:room-runtime:2.6.1"
-    implementation "androidx.room:room-ktx:2.6.1"
     kapt "androidx.room:room-compiler:2.6.1"
+    implementation "androidx.room:room-ktx:2.6.1"
 
     // -----------------------------
-    // Firebase Authentication
+    // Firebase Auth (STABLE)
     // -----------------------------
-    implementation "com.google.firebase:firebase-auth:22.2.1"
-    implementation "com.google.android.gms:play-services-auth:22.3.0"
+    implementation "com.google.firebase:firebase-auth:22.1.2"
+    implementation "com.google.android.gms:play-services-auth:21.0.1"
 
     // -----------------------------
-    // Gson (Backup / JSON)
+    // PDF
+    // -----------------------------
+    implementation "com.github.barteksc:android-pdf-viewer:3.2.0-beta.1"
+    implementation "com.itextpdf:itextg:5.5.10"
+
+    // -----------------------------
+    // Gson
     // -----------------------------
     implementation "com.google.code.gson:gson:2.10.1"
 
     // -----------------------------
-    // PDF Viewer / Generator
+    // Google Drive API
     // -----------------------------
-    implementation "com.github.barteksc:android-pdf-viewer:3.2.0-beta.1"
-    implementation "com.itextpdf:itextg:5.5.13.3"
-
-    // -----------------------------
-    // Google Drive API (Backup)
-    // -----------------------------
-    implementation "com.google.api-client:google-api-client-android:1.34.2"
-    implementation "com.google.apis:google-api-services-drive:v3-rev20230629-2.0.0"
+    implementation "com.google.api-client:google-api-client-android:1.34.0"
+    implementation "com.google.apis:google-api-services-drive:v3-rev20230822-2.0.0"
 
     // -----------------------------
     // Testing
     // -----------------------------
     testImplementation "junit:junit:4.13.2"
-    androidTestImplementation "androidx.test.ext:junit:1.1.6"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
 }
