@@ -2,11 +2,13 @@ package com.pktech.newapp.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.time.LocalDate
 
 @Entity(
     tableName = "shifts",
+    indices = [Index(value = ["employeeId"])],
     foreignKeys = [
         ForeignKey(
             entity = EmployeeEntity::class,
@@ -14,8 +16,7 @@ import java.time.LocalDate
             childColumns = ["employeeId"],
             onDelete = ForeignKey.CASCADE
         )
-     ],
-    indices = [Index(value = ["employeeId"])]
+    ]
 )
 data class ShiftEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
