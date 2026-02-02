@@ -3,7 +3,7 @@ package com.pktech.newapp.data.local.converter
 import androidx.room.TypeConverter
 import java.time.LocalDate
 
-class Converters {
+class DateConverter {
 
     @TypeConverter
     fun fromLocalDate(date: LocalDate?): String? =
