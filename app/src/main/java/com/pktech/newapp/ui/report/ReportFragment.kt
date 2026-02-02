@@ -91,4 +91,4 @@ class ReportFragment : Fragment(R.layout.fragment_report) {
         super.onDestroyView()
         _binding = null
     }
-})
+}
