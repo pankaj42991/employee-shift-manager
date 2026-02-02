@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "743495956270",
+    "project_id": "newapp-765e2",
+    "storage_bucket": "newapp-765e2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743495956270:android:394348bffb7a53a9d96cbf",
+        "android_client_info": {
+          "package_name": "com.pktech.newapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "743495956270-ukijdvil0u94r82o46qm1364rtakbfd2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5Mqzr94O6JhWCAOAIezoKFvXBijsVF8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "743495956270-ukijdvil0u94r82o46qm1364rtakbfd2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
