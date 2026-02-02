@@ -150,4 +150,28 @@ object PdfGenerator {
 
         return file
     }
+    // PdfGenerator.kt ke andar LAST me add karo
+
+fun generateEmployeeMonthlyReport(
+    context: Context,
+    employeeName: String,
+    month: String,
+    shifts: List<ShiftEntity>
+): File {
+    return generateMonthlyEmployeeReport(
+        context,
+        employeeName,
+        month,
+        shifts,
+        compOff = null
+    )
+}
+
+fun generateAdminMonthlyReport(
+    context: Context,
+    month: String,
+    data: Map<String, List<ShiftEntity>>
+): File {
+    return generateAdminTeamReport(context, month, data)
+}
 }
