@@ -20,7 +20,7 @@ import com.pktech.newapp.data.local.converter.DateConverter
     exportSchema = false
 )
 @TypeConverters(DateConverter::class)
-abstract class AppDatabase : RoomDatabase()
+
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun employeeDao(): EmployeeDao
