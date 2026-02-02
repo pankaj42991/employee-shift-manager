@@ -26,7 +26,7 @@ class ReportViewModel : ViewModel() {
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val shiftDao = App.db.shiftDao()
+                val shiftDao = NewAppApplication.db.shiftDao()
 
                 val shifts: List<ShiftEntity> =
                     shiftDao.getByEmployeeAndMonth(employeeId, month)
@@ -56,8 +56,8 @@ class ReportViewModel : ViewModel() {
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val employeeDao = App.db.employeeDao()
-                val shiftDao = App.db.shiftDao()
+                val employeeDao = NewAppApplication.db.employeeDao()
+                val shiftDao = NewAppApplication.db.shiftDao()
 
                 val employees = employeeDao.getAll()
                 val reportData = LinkedHashMap<String, List<ShiftEntity>>()
