@@ -103,3 +103,6 @@ dependencies {
     // -----------------------------
     testImplementation "junit:junit:4.13.2"
 }
+configurations.all {
+    exclude group: "com.github.barteksc", module: "android-pdf-viewer"
+}
