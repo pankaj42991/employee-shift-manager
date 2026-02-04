@@ -3,7 +3,7 @@ package com.pktech.newapp.ui.report
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pktech.newapp.App
+import com.pktech.newapp.NewAppApplication
 import com.pktech.newapp.data.local.entity.ShiftEntity
 import com.pktech.newapp.pdf.PdfGenerator
 import kotlinx.coroutines.Dispatchers
