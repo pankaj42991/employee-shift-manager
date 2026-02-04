@@ -9,10 +9,10 @@ class ReportViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(ReportViewModel::class.java)){
+        if (modelClass.isAssignableFrom(ReportViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return ReportViewModel(repository) as T
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+        throw IllegalArgumentException("Unknown ViewModel")
     }
 }
