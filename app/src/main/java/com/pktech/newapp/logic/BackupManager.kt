@@ -3,7 +3,7 @@ package com.pktech.newapp.logic
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.pktech.newapp.App
+import com.pktech.newapp.NewAppApplication
 import com.pktech.newapp.data.local.entity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
