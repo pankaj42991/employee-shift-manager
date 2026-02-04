@@ -1,40 +1,40 @@
 package com.pktech.newapp.auth
 
 import com.google.firebase.auth.FirebaseAuth
-import com.pktech.newapp.data.repository.EmployeeRepository
+import com.pktech.newapp.NewAppApplication
 import com.pktech.newapp.data.local.entity.EmployeeEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class AuthRepository(
-    private val repository: EmployeeRepository
-) {
+class AuthRepository {
 
-    private val auth = FirebaseAuth.getInstance()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
+    /**
+     * Sync Firebase user into Room DB
+     */
     suspend fun syncUserWithLocalDb() = withContext(Dispatchers.IO) {
         val firebaseUser = auth.currentUser ?: return@withContext
+
         val email = firebaseUser.email ?: return@withContext
         val name = firebaseUser.displayName ?: email.substringBefore("@")
 
-        val existing = repository.getEmployeeByEmail(email)
+        val db = NewAppApplication.instance.database
+        val employeeDao = db.employeeDao()
+
+        val existing = employeeDao.getByEmail(email)
 
         if (existing == null) {
-            repository.insertEmployee(
+            employeeDao.insert(
                 EmployeeEntity(
                     name = name,
                     email = email,
-                    isAdmin = email.equals("pankaj@gmail.com", true)
+                    isAdmin = isAdminEmail(email)
                 )
             )
         }
     }
-}    }
 
-    /**
-     * Decide Admin based on email
-     * (Simple + transparent + future editable)
-     */
     private fun isAdminEmail(email: String): Boolean {
         return email.equals("pankaj@gmail.com", ignoreCase = true)
     }
