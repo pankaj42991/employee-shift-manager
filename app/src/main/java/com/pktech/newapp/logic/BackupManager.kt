@@ -48,7 +48,7 @@ class BackupManager(private val context: Context) {
         val type = object : TypeToken<BackupData>() {}.type
         val backupData: BackupData = gson.fromJson(json, type)
 
-        val db = App.db
+        val db = NewAppApplication.db
 
         // Clear existing data (optional)
         db.employeeDao().clearAll()
