@@ -20,7 +20,7 @@ class AuthRepository {
         val email = firebaseUser.email ?: return@withContext
         val name = firebaseUser.displayName ?: email.substringBefore("@")
 
-        val employeeDao = App.db.employeeDao()
+        val employeeDao = NewAppApplication.db.employeeDao()
         val existing = employeeDao.getByEmail(email)
 
         if (existing == null) {
