@@ -10,12 +10,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 
-class ReportViewModel : ViewModel() {
+class ReportViewModel(
+    private val repository: EmployeeRepository
+) : ViewModel() {
 
-    /**
-     * Monthly PDF for single employee
-     * month format: yyyy-MM  (example: 2026-01)
-     */
     fun generateEmployeeMonthlyReport(
         context: Context,
         employeeId: Int,
@@ -26,16 +24,13 @@ class ReportViewModel : ViewModel() {
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val shiftDao = NewAppApplication.db.shiftDao()
-
-                val shifts: List<ShiftEntity> =
-                    shiftDao.getByEmployeeAndMonth(employeeId, month)
+                val shifts = repository.getShiftsByEmployeeAndMonth(employeeId, month)
 
                 val pdfFile = PdfGenerator.generateEmployeeMonthlyReport(
-                    context = context,
-                    employeeName = employeeName,
-                    month = month,
-                    shifts = shifts
+                    context,
+                    employeeName,
+                    month,
+                    shifts
                 )
 
                 onResult(pdfFile)
@@ -45,9 +40,6 @@ class ReportViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Monthly PDF for admin (all employees)
-     */
     fun generateAdminMonthlyReport(
         context: Context,
         month: String,
@@ -56,23 +48,8 @@ class ReportViewModel : ViewModel() {
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val employeeDao = NewAppApplication.db.employeeDao()
-                val shiftDao = NewAppApplication.db.shiftDao()
-
-                val employees = employeeDao.getAll()
-                val reportData = LinkedHashMap<String, List<ShiftEntity>>()
-
-                employees.forEach { emp ->
-                    val shifts = shiftDao.getByEmployeeAndMonth(emp.id, month)
-                    reportData[emp.name] = shifts
-                }
-
-                val pdfFile = PdfGenerator.generateAdminMonthlyReport(
-                    context = context,
-                    month = month,
-                    data = reportData
-                )
-
+                val data = repository.getAdminMonthlyReport(month)
+                val pdfFile = PdfGenerator.generateAdminMonthlyReport(context, month, data)
                 onResult(pdfFile)
             } catch (e: Exception) {
                 onError(e)
