@@ -7,6 +7,7 @@ plugins {
 
 android {
     namespace 'com.pktech.newapp'
+    compileSdk 34
     defaultConfig {
         applicationId "com.pktech.newapp"
         minSdk 24
