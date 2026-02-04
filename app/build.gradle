@@ -76,8 +76,11 @@ dependencies {
     // -----------------------------
     // Firebase Auth (STABLE)
     // -----------------------------
-    implementation "com.google.firebase:firebase-bom:34.8.0"
-    implementation "com.google.firebase:firebase-auth:22.1.2"
+    // Firebase BoM
+implementation platform("com.google.firebase:firebase-bom:34.8.0")
+// Firebase products (NO VERSION)
+implementation "com.google.firebase:firebase-auth"
+implementation "com.google.firebase:firebase-analytics"
     implementation "com.github.barteksc:android-pdf-viewer:3.2.0-beta.1"
 
     // -----------------------------
