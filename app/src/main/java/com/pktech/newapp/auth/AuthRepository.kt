@@ -1,7 +1,7 @@
 package com.pktech.newapp.auth
 
 import com.google.firebase.auth.FirebaseAuth
-import com.pktech.newapp.App
+import com.pktech.newapp.NewAppApplication
 import com.pktech.newapp.data.local.entity.EmployeeEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
