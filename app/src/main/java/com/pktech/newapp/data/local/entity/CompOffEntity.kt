@@ -3,7 +3,7 @@ package com.pktech.newapp.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "comp_off")
+@Entity(tableName = "comp_offs")
 data class CompOffEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val employeeId: Int,
