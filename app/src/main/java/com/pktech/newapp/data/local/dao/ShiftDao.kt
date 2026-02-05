@@ -29,4 +29,10 @@ suspend fun getAll(): List<ShiftEntity>
 
 @Query("DELETE FROM shifts")
 suspend fun clearAll()
+
+@Query("SELECT * FROM shifts WHERE date LIKE :month || '%'")
+suspend fun getByMonth(month: String): List<ShiftEntity>
+
+@Insert(onConflict = OnConflictStrategy.REPLACE)
+suspend fun insertAll(list: List<ShiftEntity>)
 }
