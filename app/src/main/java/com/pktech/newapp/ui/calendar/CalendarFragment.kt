@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pktech.newapp.NewAppApplication
+import com.pktech.newapp.R
 import com.pktech.newapp.databinding.FragmentCalendarBinding
-import java.time.LocalDate
 import java.time.YearMonth
 
 class CalendarFragment : Fragment(R.layout.fragment_calendar) {
@@ -34,15 +34,12 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     ): View {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
 
-        // Setup RecyclerView as calendar grid
         adapter = CalendarAdapter()
         binding.rvCalendar.layoutManager = GridLayoutManager(context, 7)
         binding.rvCalendar.adapter = adapter
 
-        // Load calendar for current month
         loadMonth(currentMonth)
 
-        // Prev / Next month buttons
         binding.btnPrev.setOnClickListener {
             currentMonth = currentMonth.minusMonths(1)
             loadMonth(currentMonth)
@@ -59,7 +56,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private fun loadMonth(month: YearMonth) {
         viewModel.getShiftsForMonth(month).observe(viewLifecycleOwner) { shiftList ->
             adapter.submitList(shiftList)
-            binding.tvMonth.text = month.month.name + " " + month.year
+            binding.tvMonth.text = "${month.month.name} ${month.year}"
         }
     }
 
