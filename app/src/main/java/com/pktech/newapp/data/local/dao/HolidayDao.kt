@@ -6,15 +6,12 @@ import com.pktech.newapp.data.local.entity.HolidayEntity
 @Dao
 interface HolidayDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(holiday: HolidayEntity)
-
     @Query("SELECT * FROM holidays")
     suspend fun getAll(): List<HolidayEntity>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(list: List<HolidayEntity>)
+
     @Query("DELETE FROM holidays")
     suspend fun clearAll()
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-suspend fun insertAll(list: List<HolidayEntity>)
 }
