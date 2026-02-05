@@ -6,17 +6,12 @@ import com.pktech.newapp.data.local.entity.CompOffEntity
 @Dao
 interface CompOffDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(compOff: CompOffEntity)
-
-    @Query("SELECT * FROM comp_off WHERE employeeId = :employeeId")
-    suspend fun getByEmployee(employeeId: Int): CompOffEntity?
-
-    @Query("SELECT * FROM comp_off")
+    @Query("SELECT * FROM comp_offs")
     suspend fun getAll(): List<CompOffEntity>
 
-    @Query("DELETE FROM comp_off")
-    suspend fun clearAll()
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-suspend fun insertAll(list: List<CompOffEntity>)
+    suspend fun insertAll(list: List<CompOffEntity>)
+
+    @Query("DELETE FROM comp_offs")
+    suspend fun clearAll()
 }
