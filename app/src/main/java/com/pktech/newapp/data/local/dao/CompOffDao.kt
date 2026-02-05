@@ -13,6 +13,9 @@ interface CompOffDao {
     suspend fun getAll(): List<CompOffEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(entity: CompOffEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(list: List<CompOffEntity>)
 
     @Query("DELETE FROM comp_offs")
