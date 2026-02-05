@@ -14,4 +14,7 @@ interface HolidayDao {
 
     @Query("DELETE FROM holidays")
     suspend fun clearAll()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+suspend fun insertAll(list: List<HolidayEntity>)
 }
