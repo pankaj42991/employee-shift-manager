@@ -6,7 +6,7 @@ import com.pktech.newapp.data.local.entity.EmployeeEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class AuthRepository {
+class AuthRepository(private val app: NewAppApplication) {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -19,7 +19,7 @@ class AuthRepository {
         val email = firebaseUser.email ?: return@withContext
         val name = firebaseUser.displayName ?: email.substringBefore("@")
 
-        val db = NewAppApplication.instance.database
+        val db = app.database
         val employeeDao = db.employeeDao()
 
         val existing = employeeDao.getByEmail(email)
