@@ -1,12 +1,10 @@
- package com.pktech.newapp.ui.report
-// BackupManager.kt aur ReportViewModel.kt me add karo
-import com.pktech.newapp.data.repository.EmployeeRepository
+package com.pktech.newapp.ui.report
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pktech.newapp.NewAppApplication
 import com.pktech.newapp.data.local.entity.ShiftEntity
+import com.pktech.newapp.data.repository.EmployeeRepository
 import com.pktech.newapp.pdf.PdfGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,31 +14,7 @@ class ReportViewModel(
     private val repository: EmployeeRepository
 ) : ViewModel() {
 
-    fun generateEmployeeMonthlyReport(
-        context: Context,
-        employeeId: Int,
-        employeeName: String,
-        month: String,
-        onResult: (File) -> Unit,
-        onError: (Throwable) -> Unit = {}
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val shifts = repository.getShiftsByEmployeeAndMonth(employeeId, month)
-
-                val pdfFile = PdfGenerator.generateEmployeeMonthlyReport(
-                    context,
-                    employeeName,
-                    month,
-                    shifts
-                )
-
-                onResult(pdfFile)
-            } catch (e: Exception) {
-                onError(e)
-            }
-        }
-    }
+    fun getAllShifts() = repository.getAllShifts()
 
     fun generateAdminMonthlyReport(
         context: Context,
@@ -50,9 +24,18 @@ class ReportViewModel(
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val data = repository.getAdminMonthlyReport(month)
-                val pdfFile = PdfGenerator.generateAdminMonthlyReport(context, month, data)
-                onResult(pdfFile)
+                val shifts = repository.getAdminMonthlyReport(month)
+
+                val grouped = shifts.groupBy {
+                    it.date.substring(0, 7) // yyyy-MM
+                }
+
+                val pdf = PdfGenerator.generateAdminMonthlyReport(
+                    context,
+                    month,
+                    grouped
+                )
+                onResult(pdf)
             } catch (e: Exception) {
                 onError(e)
             }
