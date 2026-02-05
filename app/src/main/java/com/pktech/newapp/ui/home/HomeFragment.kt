@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.google.firebase.auth.FirebaseAuth
 import com.pktech.newapp.NewAppApplication
 import com.pktech.newapp.databinding.FragmentHomeBinding
+import com.pktech.newapp.R
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
