@@ -6,16 +6,18 @@ import com.pktech.newapp.data.repository.EmployeeRepository
 
 class NewAppApplication : Application() {
 
-    val database by lazy {
+    // Room Database
+    val database: AppDatabase by lazy {
         AppDatabase.getInstance(this)
     }
 
-    val employeeRepository by lazy {
+    // Single source of truth Repository
+    val employeeRepository: EmployeeRepository by lazy {
         EmployeeRepository(
-            database.employeeDao(),
-            database.shiftDao(),
-            database.holidayDao(),
-            database.compOffDao()
+            employeeDao = database.employeeDao(),
+            shiftDao = database.shiftDao(),
+            holidayDao = database.holidayDao(),
+            compOffDao = database.compOffDao()
         )
     }
 }
