@@ -44,47 +44,57 @@ class ReportFragment : Fragment(R.layout.fragment_report) {
     }
 
     private fun generatePdfReport() {
-        viewModel.getAllShifts().observe(viewLifecycleOwner) { shifts ->
-            if (shifts.isEmpty()) {
-                Toast.makeText(requireContext(), "No shifts found", Toast.LENGTH_SHORT).show()
-                return@observe
-            }
 
-            val pdfDocument = PdfDocument()
-            val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create()
-            val page = pdfDocument.startPage(pageInfo)
-            val canvas = page.canvas
+        val shifts: List<ShiftEntity> =
+            (requireActivity().application as NewAppApplication)
+                .employeeRepository
+                .getAllShifts()
 
-            var y = 50
-            val paint = android.graphics.Paint().apply { textSize = 14f }
-
-            canvas.drawText("Shift Report", 40f, y.toFloat(), android.graphics.Paint().apply { textSize = 20f })
-            y += 40
-
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-
-            shifts.forEach { shift ->
-                val line = "${shift.employeeId} | ${shift.date.format(formatter)} | ${shift.shiftType} | Comp-Off Used: ${shift.isCompOffUsed}"
-                canvas.drawText(line, 40f, y.toFloat(), paint)
-                y += 25
-            }
-
-            pdfDocument.finishPage(page)
-
-            try {
-                val file = File(
-                    requireContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
-                    "Shift_Report_${System.currentTimeMillis()}.pdf"
-                )
-                pdfDocument.writeTo(FileOutputStream(file))
-                Toast.makeText(requireContext(), "PDF saved: ${file.absolutePath}", Toast.LENGTH_LONG).show()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(requireContext(), "Failed to save PDF", Toast.LENGTH_SHORT).show()
-            }
-
-            pdfDocument.close()
+        if (shifts.isEmpty()) {
+            Toast.makeText(requireContext(), "No shifts found", Toast.LENGTH_SHORT).show()
+            return
         }
+
+        val pdfDocument = PdfDocument()
+        val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create()
+        val page = pdfDocument.startPage(pageInfo)
+        val canvas = page.canvas
+
+        var y = 50
+        canvas.drawText("Shift Report", 40f, y.toFloat(), android.graphics.Paint().apply {
+            textSize = 20f
+        })
+        y += 40
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+        shifts.forEach { shift ->
+            val line =
+                "${shift.employeeId} | ${shift.date} | ${shift.shiftType} | CompOff: ${shift.isCompOffUsed}"
+            canvas.drawText(line, 40f, y.toFloat(), android.graphics.Paint().apply {
+                textSize = 14f
+            })
+            y += 25
+        }
+
+        pdfDocument.finishPage(page)
+
+        try {
+            val file = File(
+                requireContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS),
+                "Shift_Report_${System.currentTimeMillis()}.pdf"
+            )
+            pdfDocument.writeTo(FileOutputStream(file))
+            Toast.makeText(
+                requireContext(),
+                "PDF saved: ${file.absolutePath}",
+                Toast.LENGTH_LONG
+            ).show()
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Failed to save PDF", Toast.LENGTH_SHORT).show()
+        }
+
+        pdfDocument.close()
     }
 
     override fun onDestroyView() {
