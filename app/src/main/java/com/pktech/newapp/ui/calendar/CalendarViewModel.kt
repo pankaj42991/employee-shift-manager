@@ -11,17 +11,14 @@ class CalendarViewModel(
 ) : ViewModel() {
 
     fun getShiftsForMonth(month: YearMonth): LiveData<List<ShiftEntity>> {
-
         val liveData = MutableLiveData<List<ShiftEntity>>()
 
         viewModelScope.launch {
-            val monthStr =
-                "${month.year}-${month.monthValue.toString().padStart(2, '0')}"
-
-            liveData.postValue(
-                repository.getShiftsByMonth(monthStr)
-            )
+            val monthStr = "${month.year}-${month.monthValue.toString().padStart(2, '0')}"
+            val shifts = repository.getShiftsByMonth(monthStr)
+            liveData.postValue(shifts)
         }
+
         return liveData
     }
 }
