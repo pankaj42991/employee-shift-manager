@@ -5,7 +5,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "employees")
 data class EmployeeEntity(
-    @PrimaryKey val id: Int,
+
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,   // ✅ auto-generate fix
+
     val name: String,
     val email: String,
     val isAdmin: Boolean
