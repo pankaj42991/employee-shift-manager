@@ -10,11 +10,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.pktech.newapp.NewAppApplication
+import com.pktech.newapp.R
 import com.pktech.newapp.databinding.FragmentReportBinding
 import com.pktech.newapp.data.local.entity.ShiftEntity
 import java.io.File
 import java.io.FileOutputStream
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class ReportFragment : Fragment(R.layout.fragment_report) {
@@ -51,21 +51,21 @@ class ReportFragment : Fragment(R.layout.fragment_report) {
             }
 
             val pdfDocument = PdfDocument()
-            val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create() // A4 size
+            val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create()
             val page = pdfDocument.startPage(pageInfo)
             val canvas = page.canvas
 
             var y = 50
-            canvas.drawText("Shift Report", 40f, y.toFloat(), android.graphics.Paint().apply {
-                textSize = 20f
-            })
+            val paint = android.graphics.Paint().apply { textSize = 14f }
+
+            canvas.drawText("Shift Report", 40f, y.toFloat(), android.graphics.Paint().apply { textSize = 20f })
             y += 40
 
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
             shifts.forEach { shift ->
                 val line = "${shift.employeeId} | ${shift.date.format(formatter)} | ${shift.shiftType} | Comp-Off Used: ${shift.isCompOffUsed}"
-                canvas.drawText(line, 40f, y.toFloat(), android.graphics.Paint().apply { textSize = 14f })
+                canvas.drawText(line, 40f, y.toFloat(), paint)
                 y += 25
             }
 
