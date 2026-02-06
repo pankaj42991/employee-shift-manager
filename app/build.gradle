@@ -38,59 +38,59 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    // Google Drive REST API ke liye packaging options zaroori hain
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE', 'META-INF/NOTICE', 'META-INF/ASL2.0']
+        }
+    }
 }
 
-
-
 dependencies {
-
-    // AndroidX
+    // AndroidX & UI
     implementation "androidx.core:core-ktx:1.12.0"
     implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "com.google.android.material:material:1.11.0"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
 
-    // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.2"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
+    // Lifecycle & Coroutines
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.7.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 
     // Activity / Fragment
     implementation "androidx.activity:activity-ktx:1.8.2"
     implementation "androidx.fragment:fragment-ktx:1.6.2"
-
-    // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 
     // Room
     implementation "androidx.room:room-runtime:2.6.1"
     kapt "androidx.room:room-compiler:2.6.1"
     implementation "androidx.room:room-ktx:2.6.1"
 
-    // Firebase (BoM)
+    // Firebase
     implementation platform("com.google.firebase:firebase-bom:32.7.4")
     implementation "com.google.firebase:firebase-auth"
     implementation "com.google.firebase:firebase-analytics"
 
-    // Google Sign-In
-    implementation "com.google.android.gms:play-services-auth:20.7.0"
-
-    // Google Drive (Android SDK)
-    implementation "com.google.android.gms:play-services-drive:17.0.0"
+    // Auth & Google Drive REST API (Fixed & Updated)
+    implementation "com.google.android.gms:play-services-auth:21.0.1"
+    implementation "com.google.api-client:google-api-client-android:2.2.0"
+    implementation "com.google.apis:google-api-services-drive:v3-rev20231209-2.0.0"
+    implementation "com.google.http-client:google-http-client-gson:1.43.3"
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.7.3"
     implementation "androidx.navigation:navigation-ui-ktx:2.7.3"
 
-    // PDF
+    // PDF & Gson
     implementation "com.github.barteksc:android-pdf-viewer:3.2.0-beta.1"
-
-    // Gson
     implementation "com.google.code.gson:gson:2.10.1"
 
-    // Testing
     testImplementation "junit:junit:4.13.2"
 }
 
+// PDF viewer ke liye purana workaround agar zaroori ho
 configurations.all {
     exclude group: "com.github.barteksc", module: "android-pdf-viewer"
 }
