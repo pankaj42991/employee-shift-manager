@@ -12,7 +12,7 @@ class ShiftScheduler(
 ) {
 
     fun generateDaySchedule(date: LocalDate, isHoliday: Boolean): List<ShiftEntity> {
-        val result = mutableListOf<ShiftEntity>()
+        // FIXED: 'val result' wali line hata di kyunki niche direct return ho raha hai
         val day = date.dayOfWeek
 
         return if (isHoliday) {
@@ -64,10 +64,13 @@ class ShiftScheduler(
             .filter { it.id != fixedMorningEmployeeId && it.id != nightEmployee.id }
             .shuffled()
 
-        result += ShiftEntity(0, others[0].id, date, ShiftType.GENERAL.name, false, false)
-        result += ShiftEntity(0, others[1].id, date, ShiftType.GENERAL.name, false, false)
-        result += ShiftEntity(0, others[2].id, date, ShiftType.MID.name, false, false)
-        result += ShiftEntity(0, others[3].id, date, ShiftType.SECOND.name, false, false)
+        // Yahan '0' id automatic primary key handle karega
+        if (others.size >= 4) {
+            result += ShiftEntity(0, others[0].id, date, ShiftType.GENERAL.name, false, false)
+            result += ShiftEntity(0, others[1].id, date, ShiftType.GENERAL.name, false, false)
+            result += ShiftEntity(0, others[2].id, date, ShiftType.MID.name, false, false)
+            result += ShiftEntity(0, others[3].id, date, ShiftType.SECOND.name, false, false)
+        }
 
         return result
     }
@@ -117,7 +120,7 @@ class ShiftScheduler(
             ShiftEntity(
                 employeeId = emp.id,
                 date = date,
-                shiftType = shifts[index].name,
+                shiftType = if (index < shifts.size) shifts[index].name else ShiftType.GENERAL.name,
                 isHoliday = false,
                 isCompOffUsed = false
             )
