@@ -1,101 +1,89 @@
 package com.pktech.newapp.logic
 
-import android.app.Activity
 import android.content.Context
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.drive.Drive
-import com.google.android.gms.drive.DriveClient
-import com.google.android.gms.drive.DriveResourceClient
+import com.google.api.client.extensions.android.http.AndroidHttp
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.json.gson.GsonFactory
+import com.google.api.services.drive.Drive
+import com.google.api.services.drive.DriveScopes
+import com.google.api.services.drive.model.File as DriveFile
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.FileInputStream
+import java.util.Collections
 
-/**
- * Google Drive Manager for optional free-tier backup/restore
- * Integrates with BackupManager
- */
 class GoogleDriveManager(private val context: Context) {
 
-    private var driveClient: DriveClient? = null
-    private var driveResourceClient: DriveResourceClient? = null
+    private var googleDriveService: Drive? = null
+    // Background tasks ke liye scope
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     init {
-        setupDriveClient()
+        setupDriveService()
     }
 
-    /**
-     * Initialize Drive client with current signed-in account
-     */
-    private fun setupDriveClient() {
-        // FIXED: gso ko yahan define kiya aur niche client banane mein use kiya
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .requestScopes(Drive.SCOPE_FILE)
-            .build()
-
+    private fun setupDriveService() {
         val account = GoogleSignIn.getLastSignedInAccount(context)
         if (account != null) {
-            // Humne yahan GMS client fetch karne ke liye account ka use kiya
-            driveClient = Drive.getDriveClient(context, account)
-            driveResourceClient = Drive.getDriveResourceClient(context, account)
-            
-            // gso ko hum yahan Client check ke liye trigger kar sakte hain
-            GoogleSignIn.getClient(context, gso)
+            // DRIVE_FILE scope: App sirf apni banayi files dekh payegi (Safe & Free)
+            val credential = GoogleAccountCredential.usingOAuth2(
+                context, Collections.singleton(DriveScopes.DRIVE_FILE)
+            ).setSelectedAccount(account.account)
+
+            googleDriveService = Drive.Builder(
+                AndroidHttp.newCompatibleTransport(),
+                GsonFactory.getDefaultInstance(),
+                credential
+            ).setApplicationName("Employee Shift Manager").build()
         }
     }
 
     /**
-     * Start Google Sign-In activity if account not signed in
-     */
-    fun signIn(activity: Activity, requestCode: Int) {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .requestScopes(Drive.SCOPE_FILE)
-            .build()
-
-        val client = GoogleSignIn.getClient(context, gso)
-        activity.startActivityForResult(client.signInIntent, requestCode)
-    }
-
-    /**
-     * Upload a backup file to Google Drive (free-tier)
+     * Backup File Upload Karne Ka Function
      */
     fun uploadBackup(file: File, callback: (Boolean, String) -> Unit) {
-        try {
-            if (driveResourceClient == null) {
-                callback(false, "Drive not signed in")
-                return
-            }
-
-            // FIXED: 'file' ko yahan use kiya taaki compiler warning na de
-            val inputStream = FileInputStream(file)
-            val name = file.name 
-            
-            // Filhal simulation hai, isliye sirf message bhej rahe hain
-            callback(true, "Backup '$name' uploaded to Google Drive (simulated)")
-            inputStream.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            callback(false, "Upload failed: ${e.message}")
+        val service = googleDriveService
+        if (service == null) {
+            callback(false, "Google Drive signed in nahi hai!")
+            return
         }
-    }
 
-    /**
-     * Download backup file from Google Drive (free-tier)
-     */
-    fun downloadBackup(file: File, callback: (Boolean, String) -> Unit) {
-        try {
-            if (driveResourceClient == null) {
-                callback(false, "Drive not signed in")
-                return
+        // Coroutine start: Background mein upload hoga
+        scope.launch {
+            try {
+                // 1. File ki details set karein
+                val fileMetadata = DriveFile().apply {
+                    name = file.name
+                    // Agar specific folder me dalna ho toh parents set karein
+                    // parents = listOf("appDataFolder") 
+                }
+
+                // 2. File ka content taiyar karein
+                val mediaContent = com.google.api.client.http.FileContent("application/octet-stream", file)
+
+                // 3. Upload command execute karein
+                val driveFile = service.files().create(fileMetadata, mediaContent)
+                    .setFields("id")
+                    .execute()
+
+                // 4. Success message main thread par bhein
+                withContext(Dispatchers.Main) {
+                    if (driveFile.id != null) {
+                        callback(true, "Backup safaltapurvak upload ho gaya! ID: ${driveFile.id}")
+                    } else {
+                        callback(false, "Upload toh hua par ID nahi mili.")
+                    }
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    callback(false, "Galti: ${e.localizedMessage}")
+                }
             }
-
-            // FIXED: 'file' parameter ko use kiya warning hatane ke liye
-            val targetName = file.name
-            callback(true, "Backup '$targetName' downloaded from Google Drive (simulated)")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            callback(false, "Download failed: ${e.message}")
         }
     }
 }
