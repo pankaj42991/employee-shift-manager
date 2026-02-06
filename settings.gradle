@@ -7,7 +7,6 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-    // Isse project aur app level repositories ka conflict khatam hota hai
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
@@ -16,6 +15,5 @@ dependencyResolutionManagement {
     }
 }
 
-// GitHub repo name ke mutabiq
-rootProject.name = "employee-shift-manager" 
+rootProject.name = "employee-shift-manager"
 include ":app"
