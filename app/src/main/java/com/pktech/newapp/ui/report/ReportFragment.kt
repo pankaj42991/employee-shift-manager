@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.pktech.newapp.NewAppApplication
+import com.pktech.newapp.R
 import com.pktech.newapp.databinding.FragmentReportBinding
 import java.io.File
 import java.io.FileOutputStream
