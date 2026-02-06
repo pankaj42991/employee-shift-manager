@@ -16,6 +16,10 @@ interface ShiftAssignmentDao {
     @Query("SELECT * FROM shift_assignments WHERE date = :date")
     suspend fun getByDate(date: LocalDate): List<ShiftAssignmentEntity>
 
+    // ✅ YE FUNCTION ADD KARNA ZARURI HAI (Build error yahi se aa raha hai)
+    @Query("SELECT * FROM shift_assignments WHERE date LIKE :month || '%'")
+    suspend fun getByMonth(month: String): List<ShiftAssignmentEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: ShiftAssignmentEntity)
 
