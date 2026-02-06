@@ -14,7 +14,8 @@ import com.pktech.newapp.data.local.converter.DateConverter
         EmployeeEntity::class,
         ShiftEntity::class,
         HolidayEntity::class,
-        CompOffEntity::class
+        CompOffEntity::class,
+        ShiftAssignmentEntity::class
     ],
     version = 1,
     exportSchema = false
