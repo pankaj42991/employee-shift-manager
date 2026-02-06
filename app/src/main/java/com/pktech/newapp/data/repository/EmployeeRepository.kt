@@ -4,7 +4,7 @@ import com.pktech.newapp.data.local.dao.EmployeeDao
 import com.pktech.newapp.data.local.dao.ShiftDao
 import com.pktech.newapp.data.local.dao.HolidayDao
 import com.pktech.newapp.data.local.dao.CompOffDao
-import com.pktech.newapp.data.local.dao.shiftAssignmentDao
+import com.pktech.newapp.data.local.dao.ShiftAssignmentDao
 
 
 class EmployeeRepository(
