@@ -4,20 +4,18 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
     }
-    plugins {
-        id "org.jetbrains.kotlin.android" version "1.9.22"
-        id "org.jetbrains.kotlin.kapt" version "1.9.22"
-    }
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    // Isse project aur app level repositories ka conflict khatam hota hai
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        maven { url "https://jitpack.io" } // PDF Viewer
+        maven { url "https://jitpack.io" } 
     }
 }
 
-rootProject.name = "NewApp"
-include(":app")
+// GitHub repo name ke mutabiq
+rootProject.name = "employee-shift-manager" 
+include ":app"
