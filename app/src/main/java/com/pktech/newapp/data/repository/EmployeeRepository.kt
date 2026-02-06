@@ -4,13 +4,15 @@ import com.pktech.newapp.data.local.dao.EmployeeDao
 import com.pktech.newapp.data.local.dao.ShiftDao
 import com.pktech.newapp.data.local.dao.HolidayDao
 import com.pktech.newapp.data.local.dao.CompOffDao
-import com.pktech.newapp.data.local.entity.*
+import com.pktech.newapp.data.local.dao.
+import com.pktech.newapp.data.local.entity.
 
 class EmployeeRepository(
     private val employeeDao: EmployeeDao,
     private val shiftDao: ShiftDao,
     private val holidayDao: HolidayDao,
-    private val compOffDao: CompOffDao
+    private val compOffDao: CompOffDao,
+    private val shiftAssignmentDao: ShiftAssignmentDao
 ) {
 
     // Employees
@@ -25,6 +27,14 @@ class EmployeeRepository(
 
     suspend fun getShiftsByMonth(month: String): List<ShiftEntity> =
         shiftDao.getByMonth(month)
+
+            // ---------------- SHIFT ASSIGNMENTS ----------------
+
+    suspend fun assignShift(entity: ShiftAssignmentEntity) =
+        shiftAssignmentDao.insert(entity)
+
+    suspend fun getAssignmentsByMonth(month: String): List<ShiftAssignmentEntity> =
+        shiftAssignmentDao.getByMonth(month)
 
     // Holidays
     suspend fun getAllHolidays(): List<HolidayEntity> = holidayDao.getAll()
