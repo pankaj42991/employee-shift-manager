@@ -27,6 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun shiftDao(): ShiftDao
     abstract fun holidayDao(): HolidayDao
     abstract fun compOffDao(): CompOffDao
+    abstract fun shiftAssignmentDao(): ShiftAssignmentDao
 
     companion object {
         @Volatile
