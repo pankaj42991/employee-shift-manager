@@ -17,7 +17,8 @@ class NewAppApplication : Application() {
             employeeDao = database.employeeDao(),
             shiftDao = database.shiftDao(),
             holidayDao = database.holidayDao(),
-            compOffDao = database.compOffDao()
+            compOffDao = database.compOffDao(),
+            shiftAssignmentDao = shiftAssignmentDao()
         )
     }
 }
