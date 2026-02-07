@@ -91,5 +91,3 @@ dependencies {
 }
 
 // PDF viewer ke liye purana workaround agar zaroori ho
-configurations.all {
-    exclude group: "com.github.barteksc", module: "au
