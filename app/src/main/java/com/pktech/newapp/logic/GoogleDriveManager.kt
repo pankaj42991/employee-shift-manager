@@ -8,42 +8,93 @@ import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.google.api.services.drive.model.File as DriveFile
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.google.api.client.http.FileContent
+import kotlinx.coroutines.*
 import java.io.File
+import java.io.FileOutputStream
 import java.util.Collections
 
 class GoogleDriveManager(private val context: Context) {
-    private var googleDriveService: Drive? = null
-    private val scope = CoroutineScope(Dispatchers.IO)
+
+    private var driveService: Drive? = null
 
     init {
         val account = GoogleSignIn.getLastSignedInAccount(context)
+
         account?.let {
             val credential = GoogleAccountCredential.usingOAuth2(
-                context, Collections.singleton(DriveScopes.DRIVE_FILE)
+                context,
+                Collections.singleton(DriveScopes.DRIVE_FILE)
             ).setSelectedAccount(it.account)
 
-            googleDriveService = Drive.Builder(
+            driveService = Drive.Builder(
                 AndroidHttp.newCompatibleTransport(),
                 GsonFactory.getDefaultInstance(),
                 credential
-            ).setApplicationName("EmployeeShiftManager").build()
+            ).setApplicationName("Employee Shift Manager")
+                .build()
         }
     }
 
+    fun isSignedIn(): Boolean = driveService != null
+
+    // ---------------- UPLOAD BACKUP ----------------
+
     fun uploadBackup(file: File, callback: (Boolean, String) -> Unit) {
-        val service = googleDriveService ?: return callback(false, "Please Sign In first")
-        scope.launch {
+        val service = driveService ?: return callback(false, "Please sign in first")
+
+        CoroutineScope(Dispatchers.IO).launch {
             try {
                 val metadata = DriveFile().setName(file.name)
-                val content = com.google.api.client.http.FileContent("application/octet-stream", file)
+                val content = FileContent("application/octet-stream", file)
+
                 service.files().create(metadata, content).execute()
-                withContext(Dispatchers.Main) { callback(true, "Backup Uploaded!") }
+
+                withContext(Dispatchers.Main) {
+                    callback(true, "Backup uploaded to Google Drive")
+                }
+
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) { callback(false, "Error: ${e.message}") }
+                withContext(Dispatchers.Main) {
+                    callback(false, e.message ?: "Upload failed")
+                }
+            }
+        }
+    }
+
+    // ---------------- DOWNLOAD & RESTORE ----------------
+
+    fun downloadLatestBackup(localFile: File, callback: (Boolean, String) -> Unit) {
+        val service = driveService ?: return callback(false, "Please sign in first")
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val files = service.files().list()
+                    .setQ("name contains 'backup'")
+                    .setSpaces("drive")
+                    .setFields("files(id, name, modifiedTime)")
+                    .execute()
+
+                if (files.files.isEmpty()) {
+                    withContext(Dispatchers.Main) {
+                        callback(false, "No backup found")
+                    }
+                    return@launch
+                }
+
+                val latest = files.files.maxBy { it.modifiedTime.value }
+
+                val output = FileOutputStream(localFile)
+                service.files().get(latest.id).executeMediaAndDownloadTo(output)
+
+                withContext(Dispatchers.Main) {
+                    callback(true, "Backup restored successfully")
+                }
+
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    callback(false, e.message ?: "Restore failed")
+                }
             }
         }
     }
